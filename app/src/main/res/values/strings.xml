@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Country</string>
+    <string name="detail_city_summary">Summary about city</string>
+    <string name="detail_city_code">Country code city: </string>
+    <string name="detail_city_lang">Language city: </string>
+    <string name="detail_city_title">Title city</string>
+
+
+</resources>

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.yass.country.R;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -17,12 +18,12 @@ import java.util.List;
 
 public class CityListAdapter extends RecyclerView.Adapter<CityListAdapter.CityViewHolder> {
 
-    private List<String> citiesList;
+    private LinkedList<String> citiesList;
     Context context;
 
     private CityListAdapterOnClickHandler onClickHandler;
 
-    public CityListAdapter(Context context, List<String> citiesList,
+    public CityListAdapter(Context context, LinkedList<String> citiesList,
                            CityListAdapterOnClickHandler onClickHandler) {
         this.citiesList = citiesList;
         this.context = context;

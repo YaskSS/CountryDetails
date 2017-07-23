@@ -6,10 +6,23 @@
     android:layout_height="match_parent"
     tools:context="com.example.yass.country.ui.CitiesActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/city_recycler_view"
-        android:layout_margin="@dimen/small_layout_margin"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/city_recycler_view"
+            android:layout_margin="@dimen/big_layout_margin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ProgressBar
+            android:id="@+id/pb_loading_detail_indicator"
+            android:layout_height="42dp"
+            android:layout_width="42dp"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
+    </FrameLayout>
+
 
 </android.support.constraint.ConstraintLayout>

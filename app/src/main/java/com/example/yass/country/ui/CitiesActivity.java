@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.yass.country.adapters.CityListAdapter;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class CitiesActivity extends AppCompatActivity implements
@@ -34,6 +37,8 @@ public class CitiesActivity extends AppCompatActivity implements
 
     private RecyclerView citiesRecyclerView;
     private CityListAdapter cityListAdapter;
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +52,14 @@ public class CitiesActivity extends AppCompatActivity implements
         cityListAdapter = new CityListAdapter(this, getAllCities(countryName), this);
         citiesRecyclerView.setAdapter(cityListAdapter);
 
+        progressBar = (ProgressBar) findViewById(R.id.pb_loading_detail_indicator);
+
         Toast.makeText(this, "Cities", Toast.LENGTH_SHORT).show();
 
     }
 
-    private List<String> getAllCities(String country) {
-        List<String> citiesList = new ArrayList<>();
+    private LinkedList<String> getAllCities(String country) {
+        LinkedList<String> citiesList = new LinkedList<>();
         Cursor cursor = DbUtils.getCities(MainActivity.dataBase, country);
         JSONArray jsonArray = null;
         String json = "";
@@ -87,7 +94,13 @@ public class CitiesActivity extends AppCompatActivity implements
     @Override
     public void onClick(String city) {
         new AsyncTask<URL, Void, String>() {
-            ArrayList<String> keysJsonObject = new ArrayList<String>();
+            LinkedList<String> keysJsonObject = new LinkedList<>();
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                showIndicatorLoading();
+            }
 
             @Override
             protected String doInBackground(URL... urls) {
@@ -105,6 +118,7 @@ public class CitiesActivity extends AppCompatActivity implements
             protected void onPostExecute(String result) {
                 JSONObject resultJsonObject = null;
                 if (result != null && !result.equals("")) {
+                    goneIndicatorLoading();
                     try {
                         resultJsonObject = new JSONObject(result);
                         Iterator<?> keys = resultJsonObject.keys();
@@ -127,5 +141,15 @@ public class CitiesActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, DetailCityActivity.class).
                 putExtra(DETAIL_CITY, detailCity);
         startActivity(intent);
+    }
+
+    private void showIndicatorLoading(){
+        progressBar.setVisibility(View.VISIBLE);
+        citiesRecyclerView.setVisibility(View.GONE);
+    }
+
+    private void goneIndicatorLoading(){
+        progressBar.setVisibility(View.GONE);
+        citiesRecyclerView.setVisibility(View.VISIBLE);
     }
 }
